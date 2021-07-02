@@ -1,9 +1,12 @@
 import dayjs, { Dayjs } from "dayjs";
 import faker, { random } from "faker";
+import Holidays from "date-holidays"
 import fs from "fs"
 
 faker.setLocale("it")
 dayjs.locale("it")
+const hd = new Holidays
+hd.init("IT")
 
 if (fs.existsSync('note-spesa.csv'))
     fs.writeFileSync('note-spesa.csv', '')
@@ -63,7 +66,7 @@ for (let mese = 0; mese < 12; mese++) {
 
         const data = dayjs().year(anno).month(mese).add(giorno, 'days')
 
-        if (data.day() === 0 || data.day() === 6)
+        if (data.day() === 0 || data.day() === 6 || hd.isHoliday(data.toDate()))
                 continue
 
         // viaggio Trilem ogni giorno
